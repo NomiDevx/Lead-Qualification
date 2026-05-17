@@ -1,0 +1,152 @@
+{
+  "name": "Lead Qualification",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "a5a68770-4ed6-4487-aa00-df1c11f657b0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "791d0406-7f38-43cf-bf85-026cdaf8534d",
+      "name": "Webhook",
+      "webhookId": "a5a68770-4ed6-4487-aa00-df1c11f657b0"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "60e8fa29-3b16-4aae-81f1-f5af9368964f",
+              "leftValue": "={{ $json.query.companySize }}",
+              "rightValue": 50,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9c011232-d08b-498c-ac3d-a246d59140b0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "company",
+        "operation": "get",
+        "companyId": {
+          "__rl": true,
+          "value": 322000123600,
+          "mode": "list",
+          "cachedResultName": "HubSpot"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        96
+      ],
+      "id": "51e8459d-2c40-4bf5-8175-63a2d3280277",
+      "name": "Get a company",
+      "credentials": {
+        "hubspotOAuth2Api": {
+          "id": "9MtXfgBG1E40sItv",
+          "name": "HubSpot OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "xnomi05@gmail.com",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        96
+      ],
+      "id": "1821b48c-325c-4b04-bce6-18fb0ca8c8ee",
+      "name": "Send a message",
+      "webhookId": "2dee2cca-a9c0-4411-a30c-ab81a1abcb0c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BgrxHCONBXgB1fif",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get a company",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a company": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b3533cca-e11f-42f8-a2b6-ff11a433ee10",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e7a8ca6c91c5e3424513d22fad671cffb250642967db7c68bf4a47c0a1f9ccd"
+  },
+  "id": "bcdtPMmxIChNtSqs",
+  "tags": []
+}
